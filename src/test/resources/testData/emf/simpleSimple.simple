@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<simple:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:simple="http://www.xtext.org/example/simple/Simple">
+  <elements xsi:type="simple:Plus">
+    <left xsi:type="simple:Plus">
+      <left xsi:type="simple:Integer" value="1"/>
+      <right value="2"/>
+    </left>
+    <right value="3"/>
+  </elements>
+</simple:Model>

@@ -1,0 +1,5 @@
+grammar tam.syam.NewGrammar
+
+import "http://www.xtext.org/example/entity/Entity"
+
+B : 'term' | C | super=[RUL];

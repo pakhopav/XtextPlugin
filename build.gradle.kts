@@ -1,8 +1,16 @@
-import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun properties(key: String) = project.findProperty(key).toString()
+
+sourceSets.getByName("main") {
+    java.srcDir("src/main/java")
+    java.srcDir("src/main/gen")
+}
+
+sourceSets.getByName("test") {
+    java.srcDir("src/test/java")
+}
 
 plugins {
     // Java support
@@ -13,10 +21,6 @@ plugins {
     id("org.jetbrains.intellij") version "1.0"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "1.1.2"
-    // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
-    id("io.gitlab.arturbosch.detekt") version "1.17.1"
-    // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 }
 
 group = properties("pluginGroup")
@@ -27,20 +31,62 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
+    testCompileOnly(group = "junit", name = "junit", version = "4.12")
+//    compileOnly(files("org.jetbrains.kotlin:kotlin-test"))
+    compileOnly(files("libs/org.eclipse.emf.common_2.16.0.v20190528-0845.jar"))
+    compileOnly(files("libs/org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar"))
+    compileOnly(files("libs/org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar"))
+    compileOnly(files("libs/org.eclipse.emf.ecore_2.18.0.v20190528-0845.jar"))
+    compileOnly(files("libs/EntityEmf.jar"))
+    compileOnly(files("libs/ArithmeticsEmf.jar"))
+    compileOnly(files("libs/CalcEmf.jar"))
+    compileOnly(files("libs/StatemachineEmf.jar"))
+    compileOnly(files("libs/SimpleEmf.jar"))
+    compileOnly(files("libs/SmallJavaEmf.jar"))
+    compileOnly(
+        files(
+            "libs/org.xtext.domainmodel.model.jar",
+            "libs/org.xtext.xtext.model.jar",
+            "libs/org.eclipse.xtext.xbase_2.22.0.v20200602-1114.jar"
+        )
+    )
+    testCompileOnly(files("libs/org.eclipse.emf.common_2.16.0.v20190528-0845.jar"))
+    testCompileOnly(files("libs/org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar"))
+    testCompileOnly(files("libs/org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar"))
+    testCompileOnly(files("libs/org.eclipse.emf.ecore_2.18.0.v20190528-0845.jar"))
+    testCompileOnly(files("libs/EntityEmf.jar"))
+    testCompileOnly(files("libs/ArithmeticsEmf.jar"))
+    testCompileOnly(files("libs/CalcEmf.jar"))
+    testCompileOnly(files("libs/StatemachineEmf.jar"))
+    testCompileOnly(files("libs/SimpleEmf.jar"))
+    testCompileOnly(files("libs/SmallJavaEmf.jar"))
+    testCompileOnly(
+        files(
+            "libs/org.xtext.domainmodel.model.jar",
+            "libs/org.xtext.xtext.model.jar",
+            "libs/org.eclipse.xtext.xbase_2.22.0.v20200602-1114.jar"
+        )
+    )
+
 }
 
 // Configure gradle-intellij-plugin plugin.
 // Read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
+    version.set("2020.3")
     type.set(properties("platformType"))
     downloadSources.set(properties("platformDownloadSources").toBoolean())
     updateSinceUntilBuild.set(true)
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+//    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+    plugins.set(
+        listOf(
+            "java",
+            "maven", "gradle", "gradle-java", "Groovy", "org.jetbrains.idea.grammar:2020.3.1", "Kotlin"
+        )
+    )
 }
 
 // Configure gradle-changelog-plugin plugin.
@@ -48,19 +94,6 @@ intellij {
 changelog {
     version = properties("pluginVersion")
     groups = emptyList()
-}
-
-// Configure detekt plugin.
-// Read more: https://detekt.github.io/detekt/kotlindsl.html
-detekt {
-    config = files("./detekt-config.yml")
-    buildUponDefaultConfig = true
-
-    reports {
-        html.enabled = false
-        xml.enabled = false
-        txt.enabled = false
-    }
 }
 
 tasks {
@@ -71,10 +104,6 @@ tasks {
     }
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
-    }
-
-    withType<Detekt> {
-        jvmTarget = "1.8"
     }
 
     patchPluginXml {

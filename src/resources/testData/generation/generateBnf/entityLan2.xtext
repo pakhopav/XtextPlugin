@@ -1,0 +1,28 @@
+grammar org.xtext.example.entity.Entity with org.eclipse.xtext.common.Terminals
+
+import "http://www.xtext.org/example/entity/Entity"
+
+Domainmodel :
+    (elements+=Type)*;
+
+Type:
+    DataType | Entity | DataEntity;
+
+DataType:
+    'datatype' name=ID;
+
+Entity:
+    'entity' name=ID ('extends' superType=[Entity])? '{'
+        (features+=Feature)*
+    '}';
+
+Feature:
+    (many?='many')? name=ID ':' type=[Type];
+
+DataEntity returns Entity:
+    'dataEntity' name=ID '{'
+        (features+=DataFeature)*
+    '}';
+
+DataFeature returns Feature:
+    (many?='many')? name=ID ':' type=[DataType];

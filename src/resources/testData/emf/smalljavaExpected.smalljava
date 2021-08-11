@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ASCII"?>
+<smallJava:SJProgram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:smallJava="http://www.xtext.org/example/smalljava/SmallJava" name="PACKAGE_NAME">
+  <imports importedNamespace="i.m.port1"/>
+  <imports importedNamespace="impor.t2"/>
+  <classes name="String"/>
+  <classes name="Integer"/>
+  <classes name="Boolean"/>
+  <classes name="Animal"/>
+  <classes name="Person" superclass="//@classes.3">
+    <members xsi:type="smallJava:SJField" type="//@classes.0" name="name"/>
+    <members xsi:type="smallJava:SJField" access="public" type="//@classes.1" name="age"/>
+    <members xsi:type="smallJava:SJField" access="public" type="//@classes.2" name="isMale"/>
+    <members xsi:type="smallJava:SJMethod" access="public" type="//@classes.4" name="costructor">
+      <params type="//@classes.0" name="name"/>
+      <params type="//@classes.1" name="age"/>
+      <params type="//@classes.2" name="isMale"/>
+      <body>
+        <statements xsi:type="smallJava:SJAssignment">
+          <left xsi:type="smallJava:SJMemberSelection" member="//@classes.4/@members.0">
+            <receiver xsi:type="smallJava:SJThis"/>
+          </left>
+          <right xsi:type="smallJava:SJSymbolRef" symbol="//@classes.4/@members.3/@params.0"/>
+        </statements>
+        <statements xsi:type="smallJava:SJAssignment">
+          <left xsi:type="smallJava:SJMemberSelection" member="//@classes.4/@members.1">
+            <receiver xsi:type="smallJava:SJThis"/>
+          </left>
+          <right xsi:type="smallJava:SJSymbolRef" symbol="//@classes.4/@members.3/@params.1"/>
+        </statements>
+        <statements xsi:type="smallJava:SJAssignment">
+          <left xsi:type="smallJava:SJMemberSelection" member="//@classes.4/@members.2">
+            <receiver xsi:type="smallJava:SJThis"/>
+          </left>
+          <right xsi:type="smallJava:SJSymbolRef" symbol="//@classes.4/@members.3/@params.2"/>
+        </statements>
+        <statements xsi:type="smallJava:SJReturn">
+          <expression xsi:type="smallJava:SJThis"/>
+        </statements>
+      </body>
+    </members>
+    <members xsi:type="smallJava:SJMethod" access="public" type="//@classes.1" name="getAge">
+      <body>
+        <statements xsi:type="smallJava:SJReturn">
+          <expression xsi:type="smallJava:SJIntConstant" value="10"/>
+        </statements>
+      </body>
+    </members>
+  </classes>
+  <classes name="C2">
+    <members xsi:type="smallJava:SJMethod" access="public" type="//@classes.1" name="random">
+      <body>
+        <statements xsi:type="smallJava:SJVariableDeclaration" type="//@classes.6" name="r">
+          <expression xsi:type="smallJava:SJNew" type="//@classes.6"/>
+        </statements>
+        <statements xsi:type="smallJava:SJVariableDeclaration" type="//@classes.1" name="random">
+          <expression xsi:type="smallJava:SJMemberSelection" methodinvocation="true">
+            <receiver xsi:type="smallJava:SJSymbolRef" symbol="//@classes.5/@members.0/@body/@statements.0"/>
+            <member href="__synthetic0.sjava#|19"/>
+          </expression>
+        </statements>
+        <statements xsi:type="smallJava:SJVariableDeclaration" type="//@classes.4" name="pers1">
+          <expression xsi:type="smallJava:SJNew" type="//@classes.4"/>
+        </statements>
+        <statements xsi:type="smallJava:SJIfStatement">
+          <expression xsi:type="smallJava:SJMemberSelection" member="//@classes.5/@members.1" methodinvocation="true">
+            <receiver xsi:type="smallJava:SJThis"/>
+            <args xsi:type="smallJava:SJMemberSelection" methodinvocation="true">
+              <receiver xsi:type="smallJava:SJSymbolRef" symbol="//@classes.5/@members.0/@body/@statements.2"/>
+              <member href="__synthetic0.sjava#|24"/>
+            </args>
+          </expression>
+          <thenBlock>
+            <statements xsi:type="smallJava:SJReturn">
+              <expression xsi:type="smallJava:SJIntConstant" value="100"/>
+            </statements>
+          </thenBlock>
+          <elseBlock>
+            <statements xsi:type="smallJava:SJReturn">
+              <expression xsi:type="smallJava:SJIntConstant" value="200"/>
+            </statements>
+          </elseBlock>
+        </statements>
+      </body>
+    </members>
+    <members xsi:type="smallJava:SJMethod" type="//@classes.2" name="fff">
+      <params type="//@classes.1" name="int"/>
+      <body>
+        <statements xsi:type="smallJava:SJIfStatement">
+          <expression xsi:type="smallJava:SJSymbolRef" symbol="//@classes.5/@members.1/@params.0"/>
+          <thenBlock>
+            <statements xsi:type="smallJava:SJReturn">
+              <expression xsi:type="smallJava:SJBoolConstant" value="true"/>
+            </statements>
+          </thenBlock>
+          <elseBlock>
+            <statements xsi:type="smallJava:SJReturn">
+              <expression xsi:type="smallJava:SJBoolConstant" value="false"/>
+            </statements>
+          </elseBlock>
+        </statements>
+      </body>
+    </members>
+  </classes>
+  <classes name="Random">
+    <members xsi:type="smallJava:SJField" type="//@classes.1" name="myInt"/>
+    <members xsi:type="smallJava:SJMethod" access="public" type="//@classes.1" name="getRandomInt">
+      <body>
+        <statements xsi:type="smallJava:SJVariableDeclaration" type="//@classes.1" name="r">
+          <expression xsi:type="smallJava:SJIntConstant" value="100"/>
+        </statements>
+        <statements xsi:type="smallJava:SJIfStatement">
+          <expression xsi:type="smallJava:SJMemberSelection" member="//@classes.6/@members.2" methodinvocation="true">
+            <receiver xsi:type="smallJava:SJThis"/>
+          </expression>
+          <thenBlock>
+            <statements xsi:type="smallJava:SJAssignment">
+              <left xsi:type="smallJava:SJSymbolRef" symbol="//@classes.6/@members.1/@body/@statements.0"/>
+              <right xsi:type="smallJava:SJIntConstant" value="150"/>
+            </statements>
+          </thenBlock>
+        </statements>
+        <statements xsi:type="smallJava:SJReturn">
+          <expression xsi:type="smallJava:SJSymbolRef" symbol="//@classes.6/@members.1/@body/@statements.0"/>
+        </statements>
+      </body>
+    </members>
+    <members xsi:type="smallJava:SJMethod" type="//@classes.2" name="getRandomBool">
+      <body>
+        <statements xsi:type="smallJava:SJReturn">
+          <expression xsi:type="smallJava:SJBoolConstant" value="true"/>
+        </statements>
+      </body>
+    </members>
+  </classes>
+</smallJava:SJProgram>

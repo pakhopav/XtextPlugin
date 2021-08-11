@@ -1,0 +1,2 @@
+entity B{}
+entity A extends B {}

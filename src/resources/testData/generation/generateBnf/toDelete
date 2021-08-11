@@ -1,0 +1,10 @@
+@startuml
+actor MyUser
+actor CustomerCare
+database database
+MyUser -> CustomerCare : Ask a refund
+CustomerCare -> database : Verify the data
+CustomerCare -> MyUser : Issue a refund
+@enduml
+
+
