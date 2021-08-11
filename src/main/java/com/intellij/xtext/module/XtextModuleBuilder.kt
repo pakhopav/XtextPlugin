@@ -29,6 +29,8 @@ import org.jetbrains.plugins.gradle.service.project.wizard.AbstractGradleModuleB
 import org.jetbrains.plugins.gradle.service.project.wizard.GradleStructureWizardStep
 import java.io.File
 import java.io.InputStream
+import java.net.URL
+import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Paths
 import javax.swing.Icon
@@ -44,6 +46,7 @@ class XtextModuleBuilder : AbstractGradleModuleBuilder() {
 
     private val helper = XtextModuleBuilderHelper()
     private val separator = File.separator
+    private var classLoader: URLClassLoader? = null
 
     init {
         this.addListener { module ->
@@ -122,7 +125,7 @@ class XtextModuleBuilder : AbstractGradleModuleBuilder() {
 
     protected fun persistInputValues(project: Project) {
         val ecoreModels = mutableMapOf<String, String>()
-        importedModels.filter { it.file != null }.forEach {
+        importedModels.filter { it.jarFile != null }.forEach {
             ecoreModels.put(it.uri, it.targetPath!!)
         }
         val grammars = mutableMapOf<String, String>()
@@ -196,7 +199,7 @@ class XtextModuleBuilder : AbstractGradleModuleBuilder() {
         val libDir = File("$contentEntryPath/libs")
         libDir.mkdirs()
 
-        importedModels.filter { it.file != null }.forEach {
+        importedModels.filter { it.jarFile != null }.forEach {
             copyJarToNewProject(it)
         }
 
@@ -210,9 +213,25 @@ class XtextModuleBuilder : AbstractGradleModuleBuilder() {
         }
         copyJarToNewProject("org.xtext.xtext.model.jar")
 
+        initClassLoader()
+
         copyIcon()
     }
 
+
+    protected fun initClassLoader() {
+        val listOfJarUrls = mutableListOf<URL>()
+        listOfJarUrls.addAll(importedModels.mapNotNull { it.file }.map { it.toURI().toURL() })
+        listOfJarUrls.add(javaClass.classLoader.getResource("Xtext.jar"))
+        listOfJarUrls.add(javaClass.classLoader.getResource("DefaultGrammars.jar"))
+        listOfJarUrls.add(javaClass.classLoader.getResource("org.eclipse.emf.common_2.16.0.v20190528-0845.jar"))
+        listOfJarUrls.add(javaClass.classLoader.getResource("org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar"))
+        listOfJarUrls.add(javaClass.classLoader.getResource("org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar"))
+        listOfJarUrls.add(javaClass.classLoader.getResource("org.eclipse.emf.ecore_2.18.0.v20190528-0845.jar"))
+        listOfJarUrls.add(javaClass.classLoader.getResource("org.xtext.xtext.model.jar"))
+        val array = listOfJarUrls.toTypedArray()
+        classLoader = URLClassLoader(array, this.javaClass.classLoader)
+    }
 
     protected fun copyJarToNewProject(jarName: String) {
         val jarUrl = javaClass.classLoader.getResource(jarName)
@@ -244,7 +263,7 @@ class XtextModuleBuilder : AbstractGradleModuleBuilder() {
     }
 
     protected fun registerEpackages() {
-        val ePackages = importedModels.map { helper.getEcoreModelEPackage(it.file!!)!! }
+        val ePackages = importedModels.map { helper.getEcoreModelEPackage(it.jarFile!!, classLoader!!)!! }
         ePackages.forEach {
             EcorePackageRegistry.instance.registerPackage(it)
         }

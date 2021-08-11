@@ -18,6 +18,7 @@ import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Component
 import java.awt.Dimension
+import java.io.File
 import java.util.jar.JarFile
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -78,7 +79,8 @@ class ImportedJarsTable() : JPanel(BorderLayout()) {
                                 val jarFile = JarFile(jarPath)
                                 val jarNames = JarUtil.getEcoreModelUris(jarFile)
                                 if (jarNames != null && jarNames.contains(currentModelInfo.uri)) {
-                                    currentModelInfo.file = jarFile
+                                    currentModelInfo.jarFile = jarFile
+                                    currentModelInfo.file = File(jarPath)
                                     setErrorMessage(" ")
                                     tfwbb.foreground = Color.BLACK
                                 } else {
@@ -109,7 +111,7 @@ class ImportedJarsTable() : JPanel(BorderLayout()) {
                 val data = myTableModel.getRowValue(row)
                 component.background = Color.WHITE
                 component.foreground = Color.BLACK
-                if (data.file == null) {
+                if (data.jarFile == null) {
                     component.foreground = Color.RED
                 }
                 return component

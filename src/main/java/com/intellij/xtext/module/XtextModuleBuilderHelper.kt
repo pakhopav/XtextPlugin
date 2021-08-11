@@ -8,6 +8,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.LocalTimeCounter
 import com.intellij.util.PathUtil
+import com.intellij.util.io.ZipUtil
 import com.intellij.xtext.language.XtextFileType
 import com.intellij.xtext.language.psi.XtextFile
 import com.intellij.xtext.language.psi.XtextGrammarID
@@ -17,6 +18,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
+import java.nio.file.Paths
 import java.util.jar.JarFile
 import java.util.stream.Collectors
 import javax.xml.parsers.DocumentBuilderFactory
@@ -26,6 +28,8 @@ class XtextModuleBuilderHelper(val project: Project = ProjectManager.getInstance
     private val srcPath = "src/main/resources/grammars"
     private val knownGrammars: Map<String, XtextFile>
     private val knownModels: Map<String, File>
+    private val knownModelsNames =
+        listOf("org.eclipse.xtext.xbase_2.22.0.v20200602-1114.jar", "org.eclipse.emf.ecore_2.18.0.v20190528-0845.jar")
 //    private val knownJARs: Map<String, XtextFile>
 
 
@@ -107,7 +111,7 @@ class XtextModuleBuilderHelper(val project: Project = ProjectManager.getInstance
     }
 
 
-    fun getEcoreModelEPackage(jarFile: JarFile): EPackage? {
+    fun getEcoreModelEPackage(jarFile: JarFile, classLoader: ClassLoader): EPackage? {
         var ePackage: EPackage? = null
         val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val jarEntry = jarFile.getJarEntry("plugin.xml") ?: return null
@@ -124,7 +128,7 @@ class XtextModuleBuilderHelper(val project: Project = ProjectManager.getInstance
             }
         }
         try {
-            val c = Class.forName(ePackagePath)
+            val c = Class.forName(ePackagePath, true, classLoader)
             val instanceField = c.getDeclaredField("eINSTANCE")
             ePackage = instanceField.get(null) as EPackage?
         } catch (e: Throwable) {
@@ -144,8 +148,21 @@ class XtextModuleBuilderHelper(val project: Project = ProjectManager.getInstance
     fun findJarFileByRelativePath(fileRelativePath: String): File {
         val classesRoot: String = PathUtil.getJarPathForClass(XtextModuleBuilder::class.java)
         val jarName = classesRoot.split("/").last()
-        val tPath = classesRoot.slice(0..classesRoot.length - jarName.length - 1) + fileRelativePath
-        return File(tPath)
+        val jarContainingDir = classesRoot.slice(0..classesRoot.length - jarName.length - 1)
+        val tPath = jarContainingDir + fileRelativePath
+        var file = File(tPath)
+        if (!file.exists()) {
+            initialize(classesRoot, jarContainingDir)
+        }
+        file = File(tPath)
+        return file
+    }
+
+
+    private fun initialize(pluginJarPath: String, pluginJarDir: String) {
+        val path1 = Paths.get(pluginJarPath)
+        val path2 = Paths.get(pluginJarDir)
+        ZipUtil.extract(path1, path2, { f, n -> n.endsWith(".jar") })
     }
 
     fun findXtextFileByRelativePath(fileRelativePath: String): XtextFile {

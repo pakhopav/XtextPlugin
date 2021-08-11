@@ -171,7 +171,7 @@ class UsedGrammarsTable(val jarsTable: ImportedJarsTable) : JPanel(BorderLayout(
             if (helper.containsInKnownModels(modelName)) {
                 val file = helper.getKnownModel(modelName)!!
                 val jarFile = JarFile(file)
-                jarsTable.addElement(EcoreModelJarInfo(modelName, path = file.path, file = jarFile))
+                jarsTable.addElement(EcoreModelJarInfo(modelName, path = file.path, jarFile = jarFile, file = file))
             } else {
                 jarsTable.addElement(EcoreModelJarInfo(modelName))
             }

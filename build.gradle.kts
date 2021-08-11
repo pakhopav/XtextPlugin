@@ -33,18 +33,19 @@ repositories {
 dependencies {
     testCompileOnly(group = "junit", name = "junit", version = "4.12")
 //    compileOnly(files("org.jetbrains.kotlin:kotlin-test"))
-    compileOnly(files("libs/org.eclipse.emf.common_2.16.0.v20190528-0845.jar"))
-    compileOnly(files("libs/org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar"))
-    compileOnly(files("libs/org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar"))
-    compileOnly(files("libs/org.eclipse.emf.ecore_2.18.0.v20190528-0845.jar"))
-    compileOnly(files("libs/EntityEmf.jar"))
-    compileOnly(files("libs/ArithmeticsEmf.jar"))
-    compileOnly(files("libs/CalcEmf.jar"))
-    compileOnly(files("libs/StatemachineEmf.jar"))
-    compileOnly(files("libs/SimpleEmf.jar"))
-    compileOnly(files("libs/SmallJavaEmf.jar"))
+
     compileOnly(
         files(
+            "libs/org.eclipse.emf.common_2.16.0.v20190528-0845.jar",
+            "libs/org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar",
+            "libs/org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar",
+            "libs/org.eclipse.emf.ecore_2.18.0.v20190528-0845.jar",
+            "libs/EntityEmf.jar",
+            "libs/ArithmeticsEmf.jar",
+            "libs/CalcEmf.jar",
+            "libs/StatemachineEmf.jar",
+            "libs/SimpleEmf.jar",
+            "libs/SmallJavaEmf.jar",
             "libs/org.xtext.domainmodel.model.jar",
             "libs/org.xtext.xtext.model.jar",
             "libs/org.eclipse.xtext.xbase_2.22.0.v20200602-1114.jar"

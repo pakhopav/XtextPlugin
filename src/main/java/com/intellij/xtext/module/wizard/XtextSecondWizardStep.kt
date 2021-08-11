@@ -154,7 +154,7 @@ class XtextSecondWizardStep(val context: WizardContext, val builder: XtextModule
 
     private fun allTalesFound(): Boolean {
         val grammarsFound = !myUsedGrammars.filter { it.file == null }.any()
-        val jarsFound = !myImportedModels.filter { it.file == null }.any()
+        val jarsFound = !myImportedModels.filter { it.jarFile == null }.any()
         return grammarsFound && jarsFound
     }
 
@@ -185,7 +185,7 @@ class XtextSecondWizardStep(val context: WizardContext, val builder: XtextModule
             if (helper.containsInKnownModels(modelName)) {
                 val file = helper.getKnownModel(modelName)!!
                 val jarFile = JarFile(file)
-                addModel(EcoreModelJarInfo(modelName, path = file.path, file = jarFile))
+                addModel(EcoreModelJarInfo(modelName, path = file.path, jarFile = jarFile, file = file))
             } else {
                 addModel(EcoreModelJarInfo(modelName))
             }

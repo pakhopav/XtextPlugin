@@ -19,7 +19,7 @@ class ImportedJarsTableModel : ListTableModel<EcoreModelJarInfo>(NameColumnInfo(
         }
 
         override fun isCellEditable(item: EcoreModelJarInfo?): Boolean {
-            return item?.file == null
+            return item?.jarFile == null
         }
     }
 }
