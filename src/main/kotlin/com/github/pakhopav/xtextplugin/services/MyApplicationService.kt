@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.pakhopav.xtextplugin.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.pakhopav.xtextplugin.MyBundle
 
 class MyApplicationService {
 
