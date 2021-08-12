@@ -38,7 +38,6 @@ interface EcorePackageRegistry {
 //        init {
 //            packages.add(EcorePackage.eINSTANCE)
 //            packages.add(XtextPackage.eINSTANCE)
-//            packages.add(ArithmeticsPackage.eINSTANCE)
 //            packages.add(StatemachinePackage.eINSTANCE)
 //            packages.add(EntityPackage.eINSTANCE)
 //            packages.add(SimplePackage.eINSTANCE)

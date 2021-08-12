@@ -128,9 +128,39 @@ class XtextModuleBuilderHelper(val project: Project = ProjectManager.getInstance
             }
         }
         try {
-            val c = Class.forName(ePackagePath, true, classLoader)
+            var c = classLoader.loadClass(ePackagePath)
+            if (c == null) {
+                XtextModuleBuilder.LOG.warn("custom classloader didnt found class " + ePackagePath)
+                c = classLoader.parent.loadClass(ePackagePath)
+                if (c == null) XtextModuleBuilder.LOG.warn("and parent classloader didnt found class " + ePackagePath)
+            }
             val instanceField = c.getDeclaredField("eINSTANCE")
             ePackage = instanceField.get(null) as EPackage?
+        } catch (e: Throwable) {
+        }
+        return ePackage
+    }
+
+    fun getEcoreModelEPackage(jarFile: JarFile): EPackage? {
+        var ePackage: EPackage? = null
+        val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val jarEntry = jarFile.getJarEntry("plugin.xml") ?: return null
+        val doc = documentBuilder.parse(jarFile.getInputStream(jarEntry))
+        val nodeList = doc.getElementsByTagName("extension")
+        var ePackagePath: String? = null
+        loop@ for (i in 0 until nodeList.length) {
+            var item = nodeList.item(i)
+            val pointAttr = item.attributes.getNamedItem("point")
+            if (pointAttr != null && pointAttr.nodeValue.equals("org.eclipse.emf.ecore.generated_package")) {
+                val packageNode = (item as ElementImpl).getElementsByTagName("package")
+                ePackagePath = packageNode.item(0).attributes.getNamedItem("class").nodeValue
+                break@loop
+            }
+        }
+        try {
+            val c = Class.forName(ePackagePath)
+            val instanceField = c.getDeclaredField("eINSTANCE")
+            ePackage = instanceField.get(null) as? EPackage
         } catch (e: Throwable) {
         }
         return ePackage

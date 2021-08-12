@@ -81,6 +81,7 @@ class ImportedJarsTable() : JPanel(BorderLayout()) {
                                 if (jarNames != null && jarNames.contains(currentModelInfo.uri)) {
                                     currentModelInfo.jarFile = jarFile
                                     currentModelInfo.file = File(jarPath)
+                                    currentModelInfo.byUser = true
                                     setErrorMessage(" ")
                                     tfwbb.foreground = Color.BLACK
                                 } else {

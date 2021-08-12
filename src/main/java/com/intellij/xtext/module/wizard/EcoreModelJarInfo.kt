@@ -8,6 +8,7 @@ class EcoreModelJarInfo(
     var path: String? = null,
     var targetPath: String? = null,
     var jarFile: JarFile? = null,
-    var file: File? = null
+    var file: File? = null,
+    var byUser: Boolean = false
 ) {
 }
